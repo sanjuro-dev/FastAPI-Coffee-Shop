@@ -10,8 +10,9 @@ from typing import List
 # API
 security = HTTPBearer()
 app = FastAPI()
-
 init_db()
+
+# POST
 @app.post("/login")
 def login(username: str, senha: str):
 
@@ -33,6 +34,16 @@ def authenticate(credentials: HTTPAuthorizationCredentials = Depends(security)):
     except:
         raise HTTPException(status_code=401)
 
+
+@app.post("/produtos", response_model=ProdutoSchema)
+def adicionar_produto(nome: str, preco:float , user=Depends(authenticate)):
+    produto = Product(nome=nome, preco=preco)
+    db.add(produto)
+    db.commit()
+    db.refresh(produto)
+    return produto
+
+# GET
 @app.get("/produtos", response_model=List[ProdutoSchema])
 def listar_produtos(user=Depends(authenticate)):
     return db.query(Product).all()
@@ -45,13 +56,7 @@ def buscar_produto(produto_id:int, user=Depends(authenticate)):
         raise HTTPException(status_code=404)
     return produto
 
-@app.post("/produtos", response_model=ProdutoSchema)
-def adicionar_produto(nome: str, preco:float , user=Depends(authenticate)):
-    produto = Product(nome=nome, preco=preco)
-    db.add(produto)
-    db.commit()
-    db.refresh(produto)
-    return produto
+# DELETE
 @app.delete("/produtos/{produto_id}")
 def deletar_produto(produto_id: int, user=Depends(authenticate)):
 

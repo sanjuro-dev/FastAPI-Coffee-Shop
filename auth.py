@@ -1,9 +1,10 @@
-import bcrypt, datetime, jwt
+import bcrypt, datetime
+from jose import jwt
 
 SECRET_KEY = "sanjuro-dev"
 
-def verify(senha, hashed):
-    return bcrypt.checkpw(senha.encode(), hashed)
+def verify(password, hashed):
+    return bcrypt.checkpw(password.encode(), hashed.encode())
 
 def authorization(username):
     payload = {

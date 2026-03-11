@@ -1,57 +1,17 @@
-import bcrypt
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt
-import datetime
-import os
-from sqlalchemy import create_engine, Column, Integer, String, Float, select
-from sqlalchemy.orm import declarative_base, sessionmaker
-
-# Database
-diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-caminho_banco = os.path.join(diretorio_atual, "dados.db")
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{caminho_banco}"
-
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
-
-
-
-class Product(Base):
-    __tablename__ = "produtos"
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String)
-    preco = Column(Float)
-
-
-class User(Base):
-    __tablename__ = "usuarios"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    hash = Column(String)
-
-
-db = SessionLocal()
-
-# Token
-SECRET_KEY = "sanjuro-dev"
-security = HTTPBearer()
-
-def verify(senha, hashed):
-    return bcrypt.checkpw(senha.encode(), hashed)
-
-def authorization(username):
-    payload = {
-    "user": username,
-    "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(hours=1)
-    }
-    return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+from sqlalchemy import select
+from database import db, User, Product, init_db
+from auth import authorization, verify, SECRET_KEY
+from schema import ProdutoSchema
+from typing import List
 
 # API
+security = HTTPBearer()
 app = FastAPI()
 
+init_db()
 @app.post("/login")
 def login(username: str, senha: str):
 
@@ -73,6 +33,34 @@ def authenticate(credentials: HTTPAuthorizationCredentials = Depends(security)):
     except:
         raise HTTPException(status_code=401)
 
-@app.get("/produtos")
+@app.get("/produtos", response_model=List[ProdutoSchema])
 def listar_produtos(user=Depends(authenticate)):
-    return
+    return db.query(Product).all()
+
+@app.get("/produtos/{produto_id}", response_model=ProdutoSchema)
+def buscar_produto(produto_id:int, user=Depends(authenticate)):
+
+    produto = db.query(Product).filter(Product.id == produto_id).first()
+    if produto is None:
+        raise HTTPException(status_code=404)
+    return produto
+
+@app.post("/produtos", response_model=ProdutoSchema)
+def adicionar_produto(nome: str, preco:float , user=Depends(authenticate)):
+    produto = Product(nome=nome, preco=preco)
+    db.add(produto)
+    db.commit()
+    db.refresh(produto)
+    return produto
+@app.delete("/produtos/{produto_id}")
+def deletar_produto(produto_id: int, user=Depends(authenticate)):
+
+    produto = db.query(Product).filter(Product.id == produto_id).first()
+
+    if not produto:
+        raise HTTPException(status_code=404)
+
+    db.delete(produto)
+    db.commit()
+
+    return {"mensagem": "produto removido"}

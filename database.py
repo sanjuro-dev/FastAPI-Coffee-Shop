@@ -2,9 +2,9 @@ import os
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import declarative_base, sessionmaker
 from bcrypt import hashpw, gensalt
-diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-caminho_banco = os.path.join(diretorio_atual, "dados.db")
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{caminho_banco}"
+path = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(path, "data.db")
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{db_path}"
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})

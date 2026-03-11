@@ -27,13 +27,13 @@ The goal of this project is to practice building a backend API with authenticati
 Clone the repository:
 
 ```bash
-git clone https://github.com/sanjuro-dev/FastAPI.git
+git clone https://github.com/sanjuro-dev/FastAPI-Coffee-Shop
 ````
 
 Enter the project folder:
 
 ```bash
-cd FastAPI
+cd FastAPI-Coffe-Shop
 ```
 
 Create a virtual environment:

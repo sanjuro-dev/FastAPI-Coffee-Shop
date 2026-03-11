@@ -1,8 +1,6 @@
 # FastAPI Coffee Shop
 
-<p align="center">
-  <img src="logo.png" width="360" border-radius="9 px">
-</p>
+<p align="center"> <img src="logo.png" width="200" style="border-radius:50%;"> </p>
 
 
 Want some coffee? Lets keep it safe with api.

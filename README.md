@@ -1,7 +1,9 @@
 # FastAPI Coffee Shop
 
+<p align="center">
+  <img src="logo.png" width="180">
+</p>
 
-![Logo](logo.png)
 
 Want some coffee? Lets keep it safe with api.
 The API includes authentication with login and password, password hashing using bcrypt, and product queries stored in a database.

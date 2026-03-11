@@ -16,8 +16,8 @@ Base = declarative_base()
 class Product(Base):
     __tablename__ = "produtos"
     id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String)
-    preco = Column(Float)
+    name = Column(String)
+    price = Column(Float)
 
 
 class User(Base):

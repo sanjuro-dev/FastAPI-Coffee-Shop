@@ -3,7 +3,7 @@
 ![Banner](banner.png)
 
 
-Want some coffee? Lets keep it safe with api.
+
 The API includes authentication with login and password, password hashing using bcrypt, and product queries stored in a database.
 
 The goal of this project is to practice building a backend API with authentication, database access and clean structure using FastAPI and SQLAlchemy.

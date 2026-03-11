@@ -1,7 +1,7 @@
 # FastAPI Coffee Shop
 
 <p align="center">
-  <img src="logo.png" width="360">
+  <img src="logo.png" width="360" border-radius="9 px">
 </p>
 
 

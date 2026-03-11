@@ -1,95 +1,112 @@
-FastAPI Coffee Shop
+Here is the **same README but with proper Markdown formatting** (titles and code blocks).
 
-want some coffee?
+````
+# FastAPI Coffee API
+
+Simple REST API built with FastAPI for managing products in a coffee shop.  
 The API includes authentication with login and password, password hashing using bcrypt, and product queries stored in a database.
 
 The goal of this project is to practice building a backend API with authentication, database access and clean structure using FastAPI and SQLAlchemy.
 
-Features
+## Features
 
-User authentication with login and password
+- User authentication with login and password
+- Password hashing with bcrypt
+- JWT authentication
+- Product listing endpoint
+- SQLAlchemy ORM for database interaction
+- Basic HTTP status handling
 
-Password hashing with bcrypt
+## Tech Stack
 
-JWT authentication
+- Python
+- FastAPI
+- SQLAlchemy
+- bcrypt
+- JWT
 
-Product listing endpoint
-
-SQLAlchemy ORM for database interaction
-
-Basic HTTP status handling
-
-Tech Stack
-
-Python
-
-FastAPI
-
-SQLAlchemy
-
-bcrypt
-
-JWT
-
-Installation
+## Installation
 
 Clone the repository:
 
+```bash
 git clone https://github.com/sanjuro-dev/FastAPI.git
+````
 
 Enter the project folder:
 
+```bash
 cd FastAPI
+```
 
 Create a virtual environment:
 
+```bash
 python -m venv venv
+```
 
 Activate it:
 
 Windows
+
+```bash
 venv\Scripts\activate
+```
 
 Linux / Mac
+
+```bash
 source venv/bin/activate
+```
 
 Install dependencies:
 
+```bash
 pip install -r requirements.txt
+```
 
-Running the API
+## Running the API
 
 Start the server with uvicorn:
 
+```bash
 uvicorn main:app --reload
+```
 
 The API will be available at:
 
+```
 http://127.0.0.1:8000
+```
 
 Interactive documentation:
 
+```
 http://127.0.0.1:8000/docs
+```
 
-Authentication
+## Authentication
 
 Users authenticate using login and password.
 Passwords are stored hashed using bcrypt.
 After login the API returns a JWT token which must be included in protected requests.
 
-Project Structure
+## Project Structure
 
-main.py
-API entry point and route definitions
+```
+FastAPI/
+│
+├── main.py        # API entry point and routes
+├── database.py    # Database connection
+├── models.py      # SQLAlchemy models
+├── auth.py        # Authentication logic
+```
 
-database.py
-Database connection and session configuration
+## Notes
 
-models.py
-SQLAlchemy models
+The database file is not included in the repository.
+When running the project for the first time the database needs to be initialized locally.
 
-auth.py
-Authentication logic (hashing, token creation, verification)
 
 Notes
 

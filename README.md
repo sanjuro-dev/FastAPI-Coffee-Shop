@@ -1,6 +1,3 @@
-Here is the **same README but with proper Markdown formatting** (titles and code blocks).
-
-````
 # FastAPI Coffee API
 
 Simple REST API built with FastAPI for managing products in a coffee shop.  

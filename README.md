@@ -106,9 +106,3 @@ FastAPI/
 
 The database file is not included in the repository.
 When running the project for the first time the database needs to be initialized locally.
-
-
-Notes
-
-The database file is not included in the repository.
-When running the project for the first time the database needs to be initialized locally.

@@ -4,7 +4,7 @@ from jose import jwt
 from sqlalchemy import select
 from database import db, User, Product, init_db
 from auth import authorization, verify, SECRET_KEY
-from schema import ProdutoSchema
+from schema import ProductSchema
 from typing import List
 
 # API
@@ -35,7 +35,7 @@ def authenticate(credentials: HTTPAuthorizationCredentials = Depends(security)):
         raise HTTPException(status_code=401)
 
 
-@app.post("/produtos", response_model=ProdutoSchema)
+@app.post("/produtos", response_model=ProductSchema)
 def adicionar_produto(name: str, price:float , user=Depends(authenticate)):
     produto = Product(name=name, price=price)
     db.add(produto)
@@ -44,11 +44,11 @@ def adicionar_produto(name: str, price:float , user=Depends(authenticate)):
     return produto
 
 # GET
-@app.get("/produtos", response_model=List[ProdutoSchema])
+@app.get("/produtos", response_model=List[ProductSchema])
 def listar_produtos(user=Depends(authenticate)):
     return db.query(Product).all()
 
-@app.get("/produtos/{produto_id}", response_model=ProdutoSchema)
+@app.get("/produtos/{produto_id}", response_model=ProductSchema)
 def buscar_produto(product_id:int, user=Depends(authenticate)):
 
     produto = db.query(Product).filter(Product.id == product_id).first()

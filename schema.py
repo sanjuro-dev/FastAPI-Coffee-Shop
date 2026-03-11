@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class ProdutoSchema(BaseModel):
+class ProductSchema(BaseModel):
     id: int | None = None
     name: str
     price: float

@@ -2,9 +2,9 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt
 from sqlalchemy import select
-from database import db, User, Product, init_db
+from database import db, User, Coffee, init_db
 from auth import authorization, verify, SECRET_KEY
-from schema import ProductSchema
+from schema import CoffeeSchema
 from typing import List
 
 # API
@@ -35,32 +35,32 @@ def authenticate(credentials: HTTPAuthorizationCredentials = Depends(security)):
         raise HTTPException(status_code=401)
 
 
-@app.post("/produtos", response_model=ProductSchema)
-def adicionar_produto(name: str, price:float , user=Depends(authenticate)):
-    produto = Product(name=name, price=price)
-    db.add(produto)
+@app.post("/management", response_model=CoffeeSchema)
+def add_coffee(name: str, price:float , user=Depends(authenticate)):
+    coffee = Coffee(name=name, price=price)
+    db.add(coffee)
     db.commit()
-    db.refresh(produto)
-    return produto
+    db.refresh(coffee)
+    return coffee
 
 # GET
-@app.get("/produtos", response_model=List[ProductSchema])
-def listar_produtos(user=Depends(authenticate)):
-    return db.query(Product).all()
+@app.get("/management", response_model=List[CoffeeSchema])
+def check_menu(user=Depends(authenticate)):
+    return db.query(Coffee).all()
 
-@app.get("/produtos/{produto_id}", response_model=ProductSchema)
-def buscar_produto(product_id:int, user=Depends(authenticate)):
+@app.get("/management/{produto_id}", response_model=CoffeeSchema)
+def order_a_coffee(coffee_id:int, user=Depends(authenticate)):
 
-    produto = db.query(Product).filter(Product.id == product_id).first()
-    if produto is None:
+    coffee = db.query(Coffee).filter(Coffee.id == coffee_id).first()
+    if coffee is None:
         raise HTTPException(status_code=404)
-    return produto
+    return coffee
 
 # DELETE
-@app.delete("/produtos/{produto_id}")
-def deletar_produto(product_id: int, user=Depends(authenticate)):
+@app.delete("/management/{produto_id}")
+def trash_coffee(coffee_id: int, user=Depends(authenticate)):
 
-    produto = db.query(Product).filter(Product.id == product_id).first()
+    produto = db.query(Coffee).filter(Coffee.id == coffee_id).first()
 
     if not produto:
         raise HTTPException(status_code=404)
@@ -68,4 +68,4 @@ def deletar_produto(product_id: int, user=Depends(authenticate)):
     db.delete(produto)
     db.commit()
 
-    return {"mensagem": "produto removido"}
+    return {"mensagem": f"trashed {coffee_id}"}

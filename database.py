@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import declarative_base, sessionmaker
 from bcrypt import hashpw, gensalt
 path = os.path.dirname(os.path.abspath(__file__))
-db_path = os.path.join(path, "data.db")
+db_path = os.path.join(path, "menu.db")
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{db_path}"
 
 
@@ -13,8 +13,8 @@ Base = declarative_base()
 
 
 
-class Product(Base):
-    __tablename__ = "produtos"
+class Coffee(Base):
+    __tablename__ = "menu"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     price = Column(Float)
@@ -31,7 +31,9 @@ class User(Base):
 db = SessionLocal()
 
 def init_db():
-    if db.query(User).first() is None:
+    try:
+        db.query(User).first()
+    except:
         user = input()
         password = input()
         Base.metadata.create_all(engine)
@@ -39,6 +41,4 @@ def init_db():
         db.add(Admin)
         db.commit()
         print(f"Registered! welcome to Fast API, {user}")
-    else:
-        pass
 

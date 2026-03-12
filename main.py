@@ -1,5 +1,8 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.middleware import SlowAPIMiddleware
 from jose import jwt
 from sqlalchemy import select
 from database import db, User, Coffee, init_db
@@ -57,15 +60,15 @@ def order_a_coffee(coffee_id:int, user=Depends(authenticate)):
     return coffee
 
 # DELETE
-@app.delete("/management/{produto_id}")
+@app.delete("/management/{coffee_id}")
 def trash_coffee(coffee_id: int, user=Depends(authenticate)):
 
-    produto = db.query(Coffee).filter(Coffee.id == coffee_id).first()
+    coffee = db.query(Coffee).filter(Coffee.id == coffee_id).first()
 
-    if not produto:
+    if not coffee:
         raise HTTPException(status_code=404)
 
-    db.delete(produto)
+    db.delete(coffee)
     db.commit()
 
     return {"mensagem": f"trashed {coffee_id}"}

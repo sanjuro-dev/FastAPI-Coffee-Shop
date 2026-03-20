@@ -98,7 +98,7 @@ FastAPI/
 │
 ├── main.py        # API entry point and r
 ├── database.py    # Database connection
-├── schema.py      # Schemas
+├── schema.py      # Database schemas
 ├── auth.py        # Authentication logic
 ```
 

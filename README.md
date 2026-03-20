@@ -96,9 +96,9 @@ After login the API returns a JWT token which must be included in protected requ
 ```
 FastAPI/
 │
-├── main.py        # API entry point and routes
+├── main.py        # API entry point and r
 ├── database.py    # Database connection
-├── models.py      # SQLAlchemy models
+├── schema.py      # Schemas
 ├── auth.py        # Authentication logic
 ```
 

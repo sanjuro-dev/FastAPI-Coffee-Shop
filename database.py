@@ -2,6 +2,7 @@ import os
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import declarative_base, sessionmaker
 from bcrypt import hashpw, gensalt
+
 path = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(path, "menu.db")
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{db_path}"
@@ -34,8 +35,9 @@ def init_db():
     try:
         db.query(User).first()
     except:
-        user = input()
-        password = input()
+	print("Create Admin")
+        user = input("Admin user:")
+        password = input("Admin Password")
         Base.metadata.create_all(engine)
         Admin = User(name=user, hash=hashpw(password.encode(), gensalt()).decode())
         db.add(Admin)

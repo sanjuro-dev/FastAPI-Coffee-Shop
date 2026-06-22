@@ -34,8 +34,8 @@ def init_db():
     try:
         db.query(User).first()
     except:
-        user = input()
-        password = input()
+        user = input("New username:")
+        password = input("New password:")
         Base.metadata.create_all(engine)
         Admin = User(name=user, hash=hashpw(password.encode(), gensalt()).decode())
         db.add(Admin)
